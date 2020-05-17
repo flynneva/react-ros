@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { ExampleComponent } from 'react-ros'
-import 'react-ros/dist/index.css'
+import { ROS } from 'react-ros'
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  return <ROS url="ws://192.16.10.1:1111" />
 }
 
 export default App
