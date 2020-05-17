@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
 import ROSLIB from 'roslib'
 
 const rosObj = {
@@ -32,14 +32,31 @@ function useROS(rosObj) {
       console.log(e);
     }
   }
+
+  useEffect(() => {
+    handleConnect();
+  });
+
+  return rosObj;
 }
 
 // ROS Component to 
 function ROS(rosObj) {
+  const ros = useROS(rosObj);
+ 
+  var text = ""
+
+  if (ros.connected) {
+    console.log("HERE");
+    text = "connected"
+  } else {
+    console.log("HERE");
+    text ="not connected"
+  }
 
   return (
     <div>
-      ROS: {rosObj.url}
+      ROS: {text}
     </div>
   )
 }
