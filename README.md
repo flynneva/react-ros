@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm install --save react-ros
+npm install react-ros
 ```
 
 ## Usage
@@ -15,12 +15,15 @@ npm install --save react-ros
 ```jsx
 import React, { Component } from 'react'
 
-import MyComponent from 'react-ros'
-import 'react-ros/dist/index.css'
+import ROS from 'react-ros'
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return (
+      <ROS>
+        Hello World
+      </ROS>
+    );
   }
 }
 ```
