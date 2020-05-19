@@ -11,21 +11,17 @@ npm install react-ros
 
 ## Usage
 
-```jsx
-import React, { Component } from 'react'
+To make your own components that use ROS, simply import `useROS` and place it inside the `ROS` component that provides the ROS environment. 
 
-import ROS from 'react-ros'
+We've provided a [few working examples](/examples/toggle_connect/) to help get you started.
 
-class Example extends Component {
-  render() {
-    return (
-      <ROS>
-        Hello World
-      </ROS>
-    );
-  }
-}
-```
+## Special Thanks
+This project builds on the amazing work already done by people working on various projects. Here are a few that are the inspiration behind this component library:
+- [ROS 2](https://github.com/ros)
+- [roslibjs](https://github.com/RobotWebTools/roslibjs)
+- [rclnodejs](https://github.com/RobotWebTools/rclnodejs)
+- [webviz from GM Cruise](https://github.com/)
+- [jviz from Michael Johnson](https://github.com/MJohnson459/jviz)
 
 ## License
 
