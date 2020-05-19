@@ -5,7 +5,7 @@ import { ROS, Echo } from 'react-ros'
 const App = () => {
   return (
     <ROS>
-      <p>Hello world!</p>
+      <h2>Welcome</h2>
       <Echo />
     </ROS>
   )

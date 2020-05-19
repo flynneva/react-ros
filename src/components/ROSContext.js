@@ -5,6 +5,7 @@ const rosObj = {
   ROS: null,
   url: "ws://localhost:9090",
   isConnected: false,
+  topics: [],
 }
 
 const ROSContext = createContext([{}, () => {}]);
