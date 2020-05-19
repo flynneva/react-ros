@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import { ROS } from './components/ROS'
 
-describe('ExampleComponent', () => {
+describe('ROS', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(ROS).toBeTruthy()
   })
 })
