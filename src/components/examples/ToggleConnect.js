@@ -1,5 +1,5 @@
 import React from 'react'
-import { ROS, useROS } from '../ROS'
+import { useROS } from '../ROS'
 
 function ToggleConnect() {
   const { isConnected, topics, toggleConnection } = useROS();
