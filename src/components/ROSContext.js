@@ -1,11 +1,21 @@
-import React, { createContext } from 'react'
+import React, { createContext, useState } from 'react'
 import ROSLIB from 'roslib'
 
-var rosObj = {
+const rosObj = {
+  ROS: null,
   url: "ws://localhost:9090",
-  connected: false,
-  ros: ROSLIB.Ros,
-  toggleConnection: () => {}
+  isConnected: false,
 }
 
-export const ROSContext = createContext(rosObj);
+const ROSContext = createContext([{}, () => {}]);
+
+const ROSProvider = (props) => {
+  const [ ros, setROS ] = useState(rosObj);
+  return (
+    <ROSContext.Provider value={[ros, setROS]}>
+      {props.children}
+    </ROSContext.Provider>
+  );
+}
+
+export { ROSContext, ROSProvider };

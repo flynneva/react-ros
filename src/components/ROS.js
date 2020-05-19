@@ -1,23 +1,25 @@
 import React, { useContext, useState, useEffect } from 'react'
 import ROSLIB from 'roslib'
-import { ROSContext } from './ROSContext'
+import { ROSContext, ROSProvider } from './ROSContext'
 
 // ROS Hook that lets others use ROS websocket connection
 // returns the ROSLIB.Ros object
 function useROS(props) {
-  const rosEnv = useContext(ROSContext);
+  const [ros, setROS] = useContext(ROSContext);
 
   const handleConnect = () => {
     try {
-      rosEnv.ros = new ROSLIB.Ros({
-        url : rosEnv.url,
+      console.log("connecting...");
+      ros.ROS = new ROSLIB.Ros({
+        url : ros.url,
       });
 
-      if (rosEnv.ros) rosEnv.ros.on('error', (error) => {
-        
+      if (ros.ROS) ros.ROS.on('connection', (error) => {
+        console.log("connected!");
+        setROS(ros => ({ ...ros, isConnected: true }));
       })
 
-      if (rosEnv.ros) rosEnv.ros.on('error', (error) => {
+      if (ros.ROS) ros.ROS.on('error', (error) => {
         console.log(error);
       })
     } catch (e) {
@@ -26,53 +28,58 @@ function useROS(props) {
   }
 
   const handleDisconnect = () => {
+    console.log("disconnecting...");
     try {
-      rosEnv.ros.close();
-      rosEnv.connected = false;
-      rosEnv.error = null;
+      ros.ROS.close();
+      setROS(ros => ({ ...ros, isConnected: false }));
     } catch (e) {
       console.log(e);
     }
   }
 
-  useEffect(() => {
-    if (rosEnv.connected) {
+  function toggleConnection() {
+    console.log("in toggle connect");
+    if (ros.isConnected) {
       handleDisconnect();
-    } else if (!rosEnv.connected) {
+    } else if (!ros.isConnected) {
       handleConnect();
     }
-  });
+  };
 
-  return (
-    <ROSContext.Consumer>
-      <h1>{rosEnv.connected}</h1>
-      <p>{rosEnv.url}</p>
-    </ROSContext.Consumer>
-  );
-}
+  function changeUrl(new_url) {
+    setROS(ros => ({ ...state, url: new_url }));
+  }
+
+  return {
+    toggleConnection,
+    changeUrl,
+    ros: ros.ROS,
+    isConnected: ros.isConnected,
+    url: ros.url,
+  }
+};
 
 // ROS Component to manage ROS websocket connection and provide
 // it to children props
 function ROS(props: React.PropsWithChildren<props>) {
   const ros = useROS();
  
-  var text = ""
-
   useEffect(() => {
     if (ros.connected) {
       console.log("connected");
-      text = "connected";
+      console.log("do nothing");
     } else {
       console.log("not connected");
-      text ="not connected";
+      console.log("try to connect...");
+      ros.toggleConnection();
     }
   });
 
   return (
-    <ROSContext.Provider>
+    <ROSProvider>
       {props.children}
-    </ROSContext.Provider>
+    </ROSProvider>
   );
 }
 
-export default ROS;
+export { useROS, ROS };
