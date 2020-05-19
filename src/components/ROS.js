@@ -1,11 +1,11 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import ROSLIB from 'roslib'
 import { ROSContext, ROSProvider } from './ROSContext'
-
+import PropTypes from 'prop-types'
 
 // ROS Hook that lets others use ROS websocket connection
 // returns some useful functions & values
-function useROS(props) {
+function useROS() {
   const [ros, setROS] = useContext(ROSContext);
 
   function toggleConnection() {
@@ -14,15 +14,16 @@ function useROS(props) {
     } else if (!ros.isConnected) {
       handleConnect();
     }
-  };
-
-  function changeUrl(new_url) {
-    setROS(ros => ({ ...state, url: new_url }));
   }
 
-  function getTopics(): Promise<{topics: []}> {
-    var topicsPromise = new Promise((resolve, reject) => {
-      ros.ROS.getTopics((topics) => {
+  function changeUrl(new_url) {
+    setROS(ros => ({ ...ros, url: new_url }));
+  }
+
+  function getTopics() {
+    
+    const topicsPromise = new Promise((resolve, reject) => {
+        ros.ROS.getTopics((topics) => {
         const topicList = topics.topics.map((topicName, i) => {
           return {
             path: topicName,
@@ -30,9 +31,12 @@ function useROS(props) {
             type: "topic",
           }
         });
-	resolve({
+        resolve({
           topics: topicList
         });
+	reject({
+          topics: null
+	});
       }, (message) => {
         console.error("Failed to get topic", message)
       });
@@ -50,6 +54,7 @@ function useROS(props) {
       if (ros.ROS) ros.ROS.on('connection', (error) => {
         setROS(ros => ({ ...ros, isConnected: true }));
         getTopics();
+        console.log(error);
       })
 
       if (ros.ROS) ros.ROS.on('error', (error) => {
@@ -78,18 +83,20 @@ function useROS(props) {
     url: ros.url,
     topics: ros.topics,
   }
-};
+}
 
 // ROS Component to manage ROS websocket connection and provide
 // it to children props
-function ROS(props: React.PropsWithChildren<props>) {
-  const ros = useROS();
- 
+function ROS(props) {
   return (
     <ROSProvider>
       {props.children}
     </ROSProvider>
   );
+}
+
+ROS.propTypes = {
+  children: PropTypes.node.isRequired,
 }
 
 export { useROS, ROS };

@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react'
-import ROSLIB from 'roslib'
+import PropTypes from 'prop-types'
 
 const rosObj = {
   ROS: null,
@@ -17,6 +17,10 @@ const ROSProvider = (props) => {
       {props.children}
     </ROSContext.Provider>
   );
+}
+
+ROSProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 }
 
 export { ROSContext, ROSProvider };

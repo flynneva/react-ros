@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useROS } from './ROS'
 
-function Echo(props) {
+function Echo() {
   const { isConnected, topics, toggleConnection } = useROS();
   
   return (
