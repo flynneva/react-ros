@@ -2,13 +2,14 @@ import React from 'react'
 import { useROS } from '../ROS'
 
 function ToggleConnect() {
-  const { isConnected, topics, toggleConnection } = useROS();
+  const { isConnected, topics, url, toggleConnection } = useROS();
 
   return (
     <div>
+      <p><strong>ROS url:</strong> {url}</p>
       <button onClick={ toggleConnection }>Toggle Connect</button>
-      <div>Status of ROS: { isConnected ? "connected" : "not connected" }</div>
-      <div>Topics detected:</div>
+      <p><strong>Status of ROS:</strong> { isConnected ? "connected" : "not connected" }</p>
+      <p><strong>Topics detected:</strong></p>
       { topics.map((topic, i) => <li key={i}>    {topic.path}</li> )}
     </div>
   );
