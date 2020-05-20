@@ -4,7 +4,9 @@
   "description": "A React Component Library to help connect your website to your robot",
   "author": "flynneva",
   "license": "MIT",
-  "repository": "flynneva/react-ros",
+  "homepage": "https://flynneva.github.io/react-ros/readme",
+  "repository": "https://github.com/flynneva/react-ros",
+  "bugs": "https://github.com/flynneva/react-ros/issues",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
@@ -46,14 +48,23 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.4",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-scripts": {
+      "version": "^3.4.1",
+      "from": "react-scripts@^3.4.1",
+      "dependencies": {
+        "webpack": {
+          "version": "4.43.0",
+          "from": "webpack@4.43.0"
+        }
+      }
+    }
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "docz": "^2.3.1",
-    "react-scripts": "^3.4.1",
     "roslib": "^1.1.0",
     "uws": "^10.148.1"
   }
