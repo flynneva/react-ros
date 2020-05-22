@@ -1,0 +1,56 @@
+---
+name: Echo Topic
+route: /examples/simple_echo/
+menu: Examples
+---
+
+## Getting Started
+
+Throughout these examples we will assume you've already gone through the process of installing [ROS](http://wiki.ros.org/noetic/Installation/Ubuntu) or [ROS2](https://index.ros.org/doc/ros2/Installation/Foxy/) and have a [ROS websocket server](https://github.com/RobotWebTools/rosbridge_suite) running and available to connect with.
+
+The first step in connecting ROS with a website will always be establishing a connection. With `react-ros`, we make this easy by providing a very simple and easy-to-use context provider called `useROS` to get you started.
+
+## Connect to ROS
+
+Here is an example of how you can use the `useROS` component and connect your website to your robot!  In this example we provide a `ToggleConnect` component that uses the `useROS` context provider to quickly and easily integrate ROS into any button or status indicator you could want to use.
+
+```javascript
+import React from 'react'
+import { useROS } from 'react-ros'
+
+function ToggleConnect() {
+  const { isConnected, topics, url, toggleConnection } = useROS();
+
+  return (
+    <div>
+      <p><strong>ROS url:</strong> {url}</p>
+      <button onClick={ toggleConnection }>Toggle Connect</button>
+      <p><strong>Status of ROS:</strong> { isConnected ? "connected" : "not connected" }</p>
+      <p><strong>Topics detected:</strong></p>
+      { topics.map((topic, i) => <li key={i}>    {topic.path}</li> )}
+    </div>
+  );
+}
+
+export default ToggleConnect;
+```
+
+### ToggleConnect in use
+To use the simple `ToggleConnect` component we made above, wrap it in the provided `ROS` context provider component from `react-ros` and everything should just work. Go ahead and try it live below on your robot!
+
+**Note:** not shown in the code below is `import { ROS } from 'react-ros'` at the top of the file. This is needed in order to use the `ROS` context provider component.
+
+ 
+import { Playground } from 'docz'
+import { ROS } from '../ROS'
+
+import ToggleConnect from './ToggleConnect'
+
+<Playground>
+  <ROS>
+    <ToggleConnect />
+  </ROS>
+</Playground>
+
+
+Taking the toggle example even further - once connected, you should be able to subscribe to a topic and print out messages as they are received.

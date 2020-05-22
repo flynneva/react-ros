@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import ROSLIB from 'roslib'
 import { ROSContext, ROSProvider } from './ROSContext'
 import PropTypes from 'prop-types'
@@ -21,7 +21,6 @@ function useROS() {
   }
 
   function getTopics() {
-    
     const topicsPromise = new Promise((resolve, reject) => {
         ros.ROS.getTopics((topics) => {
         const topicList = topics.topics.map((topicName, i) => {
@@ -35,7 +34,7 @@ function useROS() {
           topics: topicList
         });
 	reject({
-          topics: null
+          topics: []
 	});
       }, (message) => {
         console.error("Failed to get topic", message)
@@ -54,7 +53,6 @@ function useROS() {
       if (ros.ROS) ros.ROS.on('connection', (error) => {
         setROS(ros => ({ ...ros, isConnected: true }));
         getTopics();
-        console.log(error);
       })
 
       if (ros.ROS) ros.ROS.on('error', (error) => {
