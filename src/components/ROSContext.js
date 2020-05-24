@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 const rosObj = {
   ROS: null,
+  listener: null,
   url: "ws://localhost:9090",
   isConnected: false,
   topics: [],

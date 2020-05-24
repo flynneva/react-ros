@@ -1,4 +1,4 @@
-import { ROS } from './components/ROS'
+import { ROS } from './ROS'
 
 describe('ROS', () => {
   it('is truthy', () => {

@@ -16,18 +16,21 @@ Here is an example of how you can use the `useROS` component and connect your we
 
 ```javascript
 import React from 'react'
-import { useROS } from 'react-ros'
+import { useROS } from '../ROS'
 
 function ToggleConnect() {
-  const { isConnected, topics, url, toggleConnection } = useROS();
+  const { isConnected, topics, url, changeUrl, toggleConnection } = useROS();
 
   return (
     <div>
-      <p><strong>ROS url:</strong> {url}</p>
-      <button onClick={ toggleConnection }>Toggle Connect</button>
-      <p><strong>Status of ROS:</strong> { isConnected ? "connected" : "not connected" }</p>
-      <p><strong>Topics detected:</strong></p>
-      { topics.map((topic, i) => <li key={i}>    {topic.path}</li> )}
+      <p>
+        <b>Simple connect:  </b><button onClick={ toggleConnection }>Toggle Connect</button>  <br />
+        <b>ROS url input:  </b><input name="urlInput" defaultValue={ url } onChange={event => changeUrl(event.target.value)} />  <br />
+        <b>ROS url to connect to:  </b> {url}  <br />
+        <b>Status of ROS:</b> { isConnected ? "connected" : "not connected" }   <br />
+        <b>Topics detected:</b><br />
+        { topics.map((topic, i) => <li key={i}>    {topic.path}</li> )}
+      </p>
     </div>
   );
 }
@@ -35,7 +38,7 @@ function ToggleConnect() {
 export default ToggleConnect;
 ```
 
-### ToggleConnect in use
+## ToggleConnect in use
 To use the simple `ToggleConnect` component we made above, wrap it in the provided `ROS` context provider component from `react-ros` and everything should just work. Go ahead and try it live below on your robot!
 
 **Note:** not shown in the code below is `import { ROS } from 'react-ros'` at the top of the file. This is needed in order to use the `ROS` context provider component.
@@ -45,12 +48,17 @@ import { Playground } from 'docz'
 import { ROS } from '../ROS'
 
 import ToggleConnect from './ToggleConnect'
+import EchoTopic from './EchoTopic'
 
 <Playground>
   <ROS>
     <ToggleConnect />
+    <EchoTopic />
   </ROS>
 </Playground>
 
 
+## Subscribe to a topic
+
 Taking the toggle example even further - once connected, you should be able to subscribe to a topic and print out messages as they are received.
+

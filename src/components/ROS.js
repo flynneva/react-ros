@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import ROSLIB from 'roslib'
 import { ROSContext, ROSProvider } from './ROSContext'
 import PropTypes from 'prop-types'
@@ -26,7 +26,7 @@ function useROS() {
         const topicList = topics.topics.map((topicName, i) => {
           return {
             path: topicName,
-            messageType: topics.types[i],
+            msgType: topics.types[i],
             type: "topic",
           }
         });
@@ -44,6 +44,14 @@ function useROS() {
     return ros.topics;
   }
 
+  function createListener(topic, msg_type) {
+    return new ROSLIB.Topic({
+      ros : ros.ROS,
+      name : topic,
+      messageType : msg_type
+    })
+  }
+  
   const handleConnect = () => {
     try {
       ros.ROS = new ROSLIB.Ros({
@@ -53,6 +61,7 @@ function useROS() {
       if (ros.ROS) ros.ROS.on('connection', (error) => {
         setROS(ros => ({ ...ros, isConnected: true }));
         getTopics();
+        console.log(error);
       })
 
       if (ros.ROS) ros.ROS.on('error', (error) => {
@@ -76,6 +85,7 @@ function useROS() {
     toggleConnection,
     changeUrl,
     getTopics,
+    createListener,
     ros: ros.ROS,
     isConnected: ros.isConnected,
     url: ros.url,

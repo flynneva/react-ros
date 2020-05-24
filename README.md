@@ -13,7 +13,7 @@ npm install react-ros
 
 To make your own components that use ROS, simply import `useROS` and place it inside the `ROS` component that provides the ROS environment. 
 
-We've provided a [few working examples](https://flynneva.github.io/flynneva/examples/toggle_connect/) to help get you started.
+We've provided a [few working examples](https://flynneva.github.io/react-ros/examples/simple_echo/) to help get you started.
 
 ## Special Thanks
 This project builds on the amazing work already done by people working on various projects. Here are a few that are the inspiration behind this component library:

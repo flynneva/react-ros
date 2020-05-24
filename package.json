@@ -49,23 +49,14 @@
     "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": {
-      "version": "^3.4.1",
-      "from": "react-scripts@^3.4.1",
-      "dependencies": {
-        "webpack": {
-          "version": "4.43.0",
-          "from": "webpack@4.43.0"
-        }
-      }
-    }
+    "uws": "^10.148.1"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "docz": "^2.3.1",
-    "roslib": "^1.1.0",
-    "uws": "^10.148.1"
+    "react-scripts": "^3.4.1",
+    "roslib": "^1.1.0"
   }
 }
