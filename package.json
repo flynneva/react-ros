@@ -1,6 +1,6 @@
 {
   "name": "react-ros",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A React Component Library to help connect your website to your robot",
   "author": "flynneva",
   "license": "MIT",
@@ -49,14 +49,14 @@
     "prettier": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "uws": "^10.148.1"
+    "react-scripts": "^3.4.1",
+    "docz": "^2.3.1",
+    "uws": "10.148.1"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "docz": "^2.3.1",
-    "react-scripts": "^3.4.1",
     "roslib": "^1.1.0"
   }
 }
