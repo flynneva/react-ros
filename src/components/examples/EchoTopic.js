@@ -15,9 +15,14 @@ function EchoTopic() {
       listener = null;
     }
 
+    console.log(topics);
     for (var i = 0; i < topics.length; i++) {
       if (topics[i].path == topicInput) {
-        listener = createListener(topics[i].path, topics[i].msgType);
+        listener = createListener( topics[i].path,
+                                   topics[i].msgType,
+                                   10,
+                                   'cbor-raw');
+        console.log(listener);
         break;
       }
     }
@@ -32,13 +37,11 @@ function EchoTopic() {
 
   const handleMsg = (msg) => {
     console.log(msg);
-    setLastMsg(msg.data);
   }
 
   return (
     <div>
       <b>Topic to echo:  </b><input name="topicInput" defaultValue={ displayTopic } onChange={event => handleTopic(event.target.value)} />  <br />
-      <b>Last message received:  </b> {lastMsg}
     </div>
   );
 }

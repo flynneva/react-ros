@@ -23,7 +23,7 @@ function useROS() {
   function getTopics() {
     const topicsPromise = new Promise((resolve, reject) => {
         ros.ROS.getTopics((topics) => {
-        const topicList = topics.topics.map((topicName, i) => {
+          const topicList = topics.topics.map((topicName, i) => {
           return {
             path: topicName,
             msgType: topics.types[i],
@@ -44,11 +44,13 @@ function useROS() {
     return ros.topics;
   }
 
-  function createListener(topic, msg_type) {
+  function createListener(topic, msg_type, to_queue, compression_type) {
     return new ROSLIB.Topic({
       ros : ros.ROS,
       name : topic,
-      messageType : msg_type
+      messageType : msg_type,
+      queue_length: to_queue,
+      compression: compression_type,
     })
   }
   
@@ -61,7 +63,7 @@ function useROS() {
       if (ros.ROS) ros.ROS.on('connection', (error) => {
         setROS(ros => ({ ...ros, isConnected: true }));
         getTopics();
-        console.log(error);
+        //console.log(error);
       })
 
       if (ros.ROS) ros.ROS.on('error', (error) => {
