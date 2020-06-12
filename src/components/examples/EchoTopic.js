@@ -1,27 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useROS } from '../ROS'
+
+var listener = null;
 
 function EchoTopic() {
   const { createListener, topics, isConnected } = useROS();
   const [ lastMsg, setLastMsg ] = useState('');
+  const [ topic, setTopic ] = useState('/');
+  const [ queue, setQueue ] = useState(0);
+  const [ compression, setCompression ] = useState('none');
 
-  var displayTopic = "/your/topic/here";
-  var listener = null;
+  useEffect(() => {
+    handleTopic(topic);
+  });
 
-  const handleTopic = (topicInput) => {
+  const unsubscribe = () => {
     if (listener) {
       console.log("Unsubscribing");
       listener.unsubscribe();
-      listener = null;
+    }
+  }
+
+  const handleTopic = (topicInput) => {
+    if (topic !== topicInput) {
+      setTopic(topicInput);
+      unsubscribe();
+      return;
     }
 
-    console.log(topics);
+    unsubscribe();
+    listener = null;
+
     for (var i = 0; i < topics.length; i++) {
       if (topics[i].path == topicInput) {
+        var newListener = null;
         listener = createListener( topics[i].path,
                                    topics[i].msgType,
-                                   10,
-                                   'cbor-raw');
+                                   Number(queue),
+                                   compression);
+        console.log("Listener created");
         console.log(listener);
         break;
       }
@@ -31,8 +48,18 @@ function EchoTopic() {
       console.log("Subscribing to messages...");
       listener.subscribe(handleMsg);
     } else {
-      console.log("Topic not found...make sure to input the full topic path - including the leading '/'");
+      console.log("Topic '" + topic + "' not found...make sure to input the full topic path - including the leading '/'");
     }
+  }
+
+  const handleQueue = (queueInput) => {
+    setQueue(queueInput);
+    handleTopic(topic);
+  }
+
+  const handleCompression = (compInput) => {
+    setCompression(compInput);
+    handleTopic(topic);
   }
 
   const handleMsg = (msg) => {
@@ -41,7 +68,9 @@ function EchoTopic() {
 
   return (
     <div>
-      <b>Topic to echo:  </b><input name="topicInput" defaultValue={ displayTopic } onChange={event => handleTopic(event.target.value)} />  <br />
+      <b>Message Queue Length:  </b><input name="queueInput" defaultValue={ queue } onChange={event => handleQueue(event.target.value)} />  <br />
+      <b>Compression:  </b><input name="compInput" defaultValue={ compression } onChange={event => handleCompression(event.target.value)} />  <br />
+      <b>Topic to echo:  </b><input name="topicInput" defaultValue={ topic } onChange={event => handleTopic(event.target.value)} />  <br />
     </div>
   );
 }
