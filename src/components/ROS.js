@@ -20,7 +20,6 @@ function useROS() {
     setROS(ros => ({ ...ros, url: new_url }));
   }
 
-  
   function getTopics() {
     const topicsPromise = new Promise((resolve, reject) => {
         ros.ROS.getTopics((topics) => {
@@ -46,13 +45,23 @@ function useROS() {
   }
 
   function createListener(topic, msg_type, to_queue, compression_type) {
-    return new ROSLIB.Topic({
+    var newListener = new ROSLIB.Topic({
       ros : ros.ROS,
       name : topic,
       messageType : msg_type,
       queue_length: to_queue,
       compression: compression_type,
     })
+
+    for (var listener in ros.listeners) {
+      if (newListener.name === ros.listeners[listener].name) {
+        console.log('Listener already available in ros.listeners[' + listener + ']');
+        return ros.listeners[listener];
+      }
+    }
+    ros.listeners.push(newListener);
+    console.log('Listener created');
+    return newListener;
   }
   
   const handleConnect = () => {
@@ -92,7 +101,7 @@ function useROS() {
     isConnected: ros.isConnected,
     url: ros.url,
     topics: ros.topics,
-    subscribedTopics: ros.subscribedTopics,
+    listeners: ros.listeners,
   }
 }
 

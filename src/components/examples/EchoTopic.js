@@ -4,7 +4,7 @@ import { useROS } from '../ROS'
 var listener = null;
 
 function EchoTopic() {
-  const { createListener, topics, isConnected } = useROS();
+  const { createListener, topics, isConnected, listeners } = useROS();
   const [ lastMsg, setLastMsg ] = useState('');
   const [ topic, setTopic ] = useState('/');
   const [ queue, setQueue ] = useState(0);
@@ -38,8 +38,6 @@ function EchoTopic() {
                                    topics[i].msgType,
                                    Number(queue),
                                    compression);
-        console.log("Listener created");
-        console.log(listener);
         break;
       }
     }
