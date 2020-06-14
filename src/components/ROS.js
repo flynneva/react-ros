@@ -20,6 +20,7 @@ function useROS() {
     setROS(ros => ({ ...ros, url: new_url }));
   }
 
+  
   function getTopics() {
     const topicsPromise = new Promise((resolve, reject) => {
         ros.ROS.getTopics((topics) => {
@@ -63,7 +64,6 @@ function useROS() {
       if (ros.ROS) ros.ROS.on('connection', (error) => {
         setROS(ros => ({ ...ros, isConnected: true }));
         getTopics();
-        //console.log(error);
       })
 
       if (ros.ROS) ros.ROS.on('error', (error) => {
@@ -92,6 +92,7 @@ function useROS() {
     isConnected: ros.isConnected,
     url: ros.url,
     topics: ros.topics,
+    subscribedTopics: ros.subscribedTopics,
   }
 }
 

@@ -7,6 +7,7 @@ const rosObj = {
   url: "ws://localhost:9090",
   isConnected: false,
   topics: [],
+  subscribedTopics: [],
 }
 
 const ROSContext = createContext([{}, () => {}]);
