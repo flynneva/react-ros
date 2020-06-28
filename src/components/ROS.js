@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import ROSLIB from 'roslib'
 import { ROSContext, ROSProvider } from './ROSContext'
 import PropTypes from 'prop-types'
@@ -7,6 +7,14 @@ import PropTypes from 'prop-types'
 // returns some useful functions & values
 function useROS() {
   const [ros, setROS] = useContext(ROSContext);
+
+  useEffect(() => {
+    if (!ros.isConnected) {
+      if(ros.autoconnect) {
+        console.log('autoconnecting');
+      }
+    }
+  })
 
   function toggleConnection() {
     if (ros.isConnected) {

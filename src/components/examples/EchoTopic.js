@@ -31,9 +31,8 @@ function EchoTopic() {
     unsubscribe();
     listener = null;
 
-    for (var i = 0; i < topics.length; i++) {
+    for (var i in topics) {
       if (topics[i].path == topicInput) {
-        var newListener = null;
         listener = createListener( topics[i].path,
                                    topics[i].msgType,
                                    Number(queue),
@@ -52,12 +51,10 @@ function EchoTopic() {
 
   const handleQueue = (queueInput) => {
     setQueue(queueInput);
-    handleTopic(topic);
   }
 
   const handleCompression = (compInput) => {
     setCompression(compInput);
-    handleTopic(topic);
   }
 
   const handleMsg = (msg) => {
