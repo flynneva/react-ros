@@ -4,8 +4,7 @@ import { useROS } from '../ROS'
 var listener = null;
 
 function EchoTopic() {
-  const { createListener, topics, isConnected, listeners } = useROS();
-  const [ lastMsg, setLastMsg ] = useState('');
+  const { createListener, topics } = useROS();
   const [ topic, setTopic ] = useState('/');
   const [ queue, setQueue ] = useState(0);
   const [ compression, setCompression ] = useState('none');
