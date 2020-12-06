@@ -3,11 +3,7 @@
 
 name: Node.js CI
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push]
 
 jobs:
   build:
@@ -16,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [8.x, 10.x, 12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -24,6 +20,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
+    - run: npm install
     - run: npm run build --if-present
     - run: npm test
+      env:
+        CI: true
