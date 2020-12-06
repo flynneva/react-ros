@@ -78,7 +78,7 @@ function useROS() {
         url : ros.url,
       });
 
-      if (ros.ROS) ros.ROS.on('connection', (error) => {
+      if (ros.ROS) ros.ROS.on('connection', () => {
         setROS(ros => ({ ...ros, isConnected: true }));
         getTopics();
       })
