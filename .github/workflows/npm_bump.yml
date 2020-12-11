@@ -1,19 +1,21 @@
 name: Bump and Release
 on:
   push:
-    branches:
-      - master
+    branch: master
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v5.1
+      - uses: actions/setup-node@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag_prefix: ''
+          node-version: '12.x'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+      - name: Bump version and push tag
+        run: npm run bump minor "bump version"
       - name: Create a GitHub release
         uses: actions/create-release@v1
         env:
