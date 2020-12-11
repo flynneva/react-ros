@@ -1,4 +1,4 @@
-name: Bump and Release
+name: Bump, Tag, NPM Publish and GH Release
 on:
   push:
     branches: master
@@ -19,7 +19,12 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Bump version and push tag
-        run: npm run bump minor "bump version"
+        uses: mikeal/merge-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DEPLOY_DIR: dist
+          SRC_PACKAGE_DIR: src
       - name: Get new version
         id: package
         uses: martinbeentjes/npm-get-version-action@master
