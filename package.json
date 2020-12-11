@@ -57,6 +57,7 @@
     "dist"
   ],
   "dependencies": {
+    "acorn": "^8.0.4",
     "roslib": "^1.1.0"
   }
 }
