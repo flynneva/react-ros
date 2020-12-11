@@ -20,11 +20,14 @@ jobs:
         run: npm test
       - name: Bump version and push tag
         run: npm run bump minor "bump version"
+      - name: Get new version
+        id: package
+        uses: martinbeentjes/npm-get-version-action@master
       - name: Create a GitHub release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.tag_version.outputs.new_tag }}
-          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
+          tag_name: ${{ steps.package.outputs.current-version }}
+          release_name: Release ${{ steps.package.outputs.current-version }}
+          body: ""
