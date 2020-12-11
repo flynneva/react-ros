@@ -22,7 +22,7 @@ jobs:
         uses: mikeal/merge-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           DEPLOY_DIR: dist
           SRC_PACKAGE_DIR: src
       - name: Get new version
