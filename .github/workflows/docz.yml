@@ -1,0 +1,20 @@
+name: Update Docs
+on:
+  push:
+    branches: master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Setup git config
+        run: |
+          git config user.name "flynneva"
+          git config user.email "<evanflynn.msu@gmail.com>"
+      - name: Install dependencies
+        run: npm install
+      - name: Publish Docz
+        run: npm run deploy
