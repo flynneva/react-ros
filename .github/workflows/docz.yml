@@ -14,6 +14,7 @@ jobs:
         run: |
           git config user.name "flynneva"
           git config user.email "<evanflynn.msu@gmail.com>"
+          git remote set-url origin https://flynneva:${{ secrets.GITHUB_TOKEN }}@github.com/flynneva/react-ros.git
       - name: Install dependencies
         run: npm install
       - name: Publish Docz
