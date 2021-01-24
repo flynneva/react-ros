@@ -1,8 +1,8 @@
-import Reacti, { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useROS } from '../ROS'
 
 function ToggleConnect() {
-  const { isConnected, topics, url, changeUrl, toggleConnection, toggleAutoconnect, autoconnect } = useROS();
+  const { isConnected, topics, url, changeUrl, toggleConnection, toggleAutoconnect} = useROS();
 
   // Try replacing this with your own unique rosbridge webserver address
   const defaultURL = "ws://0.0.0.0:9090";
