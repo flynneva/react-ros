@@ -12,6 +12,7 @@ function useROS() {
     if (!ros.isConnected) {
       if(ros.autoconnect) {
         console.log('autoconnecting');
+        handleConnect();
       }
     }
   })
@@ -24,6 +25,14 @@ function useROS() {
     }
   }
 
+  function toggleAutoconnect() {
+    if (ros.autoconnect) {
+      setROS(ros => ({ ...ros, autoconnect: false }));
+    } else if (!ros.autoconnect) {
+      setROS(ros => ({ ...ros, autoconnect: true }));
+    }
+  }
+  
   function changeUrl(new_url) {
     setROS(ros => ({ ...ros, url: new_url }));
   }
@@ -100,13 +109,16 @@ function useROS() {
       console.log(e);
     }
   }
+  
   return {
     toggleConnection,
     changeUrl,
     getTopics,
     createListener,
+    toggleAutoconnect,
     ros: ros.ROS,
     isConnected: ros.isConnected,
+    autoconnect: ros.autoconnect,
     url: ros.url,
     topics: ros.topics,
     listeners: ros.listeners,

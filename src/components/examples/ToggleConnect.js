@@ -1,8 +1,28 @@
-import React from 'react'
+import Reacti, { useEffect } from 'react'
 import { useROS } from '../ROS'
 
 function ToggleConnect() {
-  const { isConnected, topics, url, changeUrl, toggleConnection } = useROS();
+  const { isConnected, topics, url, changeUrl, toggleConnection, toggleAutoconnect, autoconnect } = useROS();
+
+  // Try replacing this with your own unique rosbridge webserver address
+  const defaultURL = "ws://0.0.0.0:9090";
+	
+  // only runs once when ToggleConnect is first rendered (mounted)
+  useEffect(() => {
+    console.log('ToggleConnect is mounted!');
+    if (url !== defaultURL) {
+      changeUrl(defaultURL);
+    }
+
+    if (!isConnected) {
+      toggleAutoconnect();
+    }
+  },[])
+    
+  // runs every time there is an update to any state/rerender
+  useEffect(() => {
+    //console.log('rerender ToggleConnect');
+  })
 
   return (
     <div>
