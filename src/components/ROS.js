@@ -105,9 +105,11 @@ function useROS() {
       ros.ROS.close();
       setROS(ros => ({ ...ros, isConnected: false }));
       setROS(ros => ({ ...ros, topics: [] }));
+      setROS(ros => ({ ...ros, listeners: [] }));
     } catch (e) {
       console.log(e);
     }
+    console.log('Disconnect Requested');
   }
   
   return {
