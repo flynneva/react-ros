@@ -19,20 +19,18 @@ jobs:
       - name: Build Release
         run: npm run build
       - name: Bump version and push tag
+        id: bump
         uses: mikeal/merge-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           DEPLOY_DIR: .
           SRC_PACKAGE_DIR: .
-      - name: Get new version
-        id: package
-        uses: martinbeentjes/npm-get-version-action@master
       - name: Create a GitHub release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.package.outputs.current-version }}
-          release_name: Release ${{ steps.package.outputs.current-version }}
+          tag_name: ${{ steps.bump.outputs.version }}
+          release_name: Release ${{ steps.bump.outputs.version }}
           body: ""
