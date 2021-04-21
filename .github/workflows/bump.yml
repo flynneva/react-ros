@@ -23,7 +23,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          DEPLOY_DIR: dest
+          DEPLOY_DIR: dist
           SRC_PACKAGE_DIR: .
       - name: Get new version
         id: package
