@@ -12,20 +12,25 @@ jobs:
           node-version: '12.x'
       - name: Setup git config
         run: |
-          git config user.name "flynneva"
-          git config user.email "<evanflynn.msu@gmail.com>"
-      - name: Install dependencies
+          git config user.name $GITHUB_ACTOR
+          git config user.email gh-actions-${GITHUB_ACTOR}@github.com>
+          npm config set //registry.npmjs.org/:_authToken=$NPM_API_TOKEN
+        env:
+          NPM_API_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Install Dependencies
         run: npm install
       - name: Build Release
         run: npm run build
-      - name: Bump version and push tag
+      - name: Bump and Tag
         id: bump
-        uses: mikeal/merge-release@master
+        run: |
+          npm version minor --force -m "Version %s"
+          git remote add gh-origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          git push gh-origin HEAD:main --tags
+          version=$(npm run env | grep npm_package_version | cut -d '=' -f 2)
+          echo "::set-env name=version::$version"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          DEPLOY_DIR: .
-          SRC_PACKAGE_DIR: .
       - name: Create a GitHub release
         uses: actions/create-release@v1
         env:
