@@ -22,13 +22,12 @@ jobs:
       - name: Build Release
         run: npm run build
       - name: Bump and Tag
-        id: bump
         run: |
           npm version minor --force -m "Version %s"
           git remote add gh-origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
           git push gh-origin HEAD:main --tags
           version=$(npm run env | grep npm_package_version | cut -d '=' -f 2)
-          echo "::set-env name=version::$version"
+          echo "version=$version" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create a GitHub release
@@ -36,6 +35,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.bump.outputs.version }}
-          release_name: Release ${{ steps.bump.outputs.version }}
+          tag_name: ${{ env.version }}
+          release_name: Release ${{ env.version }}
           body: ""
