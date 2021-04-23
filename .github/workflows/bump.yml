@@ -30,6 +30,8 @@ jobs:
           echo "version=$version" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to NPM
+        run: npm publish
       - name: Create a GitHub release
         uses: actions/create-release@v1
         env:
