@@ -1,6 +1,6 @@
 {
   "name": "react-ros",
-  "version": "0.0.13",
+  "version": "0.0.15",
   "description": "A React Component Library to help connect your website to your robot",
   "author": "flynneva",
   "license": "MIT",
