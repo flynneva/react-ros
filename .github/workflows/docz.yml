@@ -19,7 +19,10 @@ jobs:
           git remote add gh-origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install Dependencies
-        run: npm install
-      - name: Publish Docz
-        run: npm run deploy
+      - name: Install & Build the Docz
+        run: npm run predeploy
+      - name: Deploy Docz
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: docs 
