@@ -1,21 +1,25 @@
 name: Update Docs
 on:
   push:
-    branches: master
+    branches: main
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - name: Setup git config
+      - name: Setup Git
         run: |
-          git config user.name "flynneva"
-          git config user.email "<evanflynn.msu@gmail.com>"
-          git remote set-url origin https://flynneva:${{ secrets.GITHUB_TOKEN }}@github.com/flynneva/react-ros.git
-      - name: Install dependencies
+          git config user.name $GITHUB_ACTOR
+          git config user.email gh-actions-${GITHUB_ACTOR}@github.com
+          git remote add gh-origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Dependencies
         run: npm install
       - name: Publish Docz
         run: npm run deploy
