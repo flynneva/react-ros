@@ -77,7 +77,7 @@ function useROS() {
       }
     }
     ros.listeners.push(newListener);
-    console.log('Listener created');
+    console.log('Listener ' + newListener.name + ' created');
     return newListener;
   }
   
@@ -105,17 +105,40 @@ function useROS() {
       ros.ROS.close();
       setROS(ros => ({ ...ros, isConnected: false }));
       setROS(ros => ({ ...ros, topics: [] }));
+      setROS(ros => ({ ...ros, listeners: [] }));
     } catch (e) {
       console.log(e);
     }
+    console.log('Disconnect Requested');
   }
   
+const removeAllListeners = () =>{
+  for(var mlistener in ros.listeners){
+    ros.listeners[mlistener].removeAllListeners();
+  }
+  setROS(ros => ({ ...ros, listeners: [] }));
+}
+
+function removeListener (listener){
+  for(var mlistener in ros.listeners){
+    if(listener.name === ros.listeners[mlistener].name){
+      console.log('Listener: ' + listener.name + ' is removed')
+      ros.listeners.splice(mlistener,1)
+      listener.removeAllListeners();
+      return
+    }
+  }
+  console.log('Listener: ' + listener + ' is not a listener')
+}
+
   return {
     toggleConnection,
     changeUrl,
     getTopics,
     createListener,
     toggleAutoconnect,
+    removeAllListeners,
+    removeListener,
     ros: ros.ROS,
     isConnected: ros.isConnected,
     autoconnect: ros.autoconnect,
