@@ -17,6 +17,29 @@ function useROS() {
     }
   })
 
+  function checkConnection() {
+    if (ros.ROS){
+      if (ros.isConnected) {
+        if (!ros.ROSConfirmedConnected && ros.ROS.isConnected) {
+          setROS(ros => ({ ...ros, ROSConfirmedConnected: ros.ROS.isConnected }))
+          console.log("Both react-ros and roslibjs have confirmed connection.")
+        }
+        // Once we have that "confirmation"  we need to continously check for good connection
+        else if (ros.ROSConfirmedConnected && !ros.ROS.isConnected) {
+          setROS(ros => ({ ...ros, isConnected: false }));
+          handleDisconnect();
+        }
+        else if (!ros.ROS.isConnected) {
+          console.log("React-ros has confirmed the connection, roslibjs has not yet.")
+        }
+      }
+    }
+    else{
+      console.log("Initial connection not established yet")
+    }
+  }
+
+
   function toggleConnection() {
     if (ros.isConnected) {
       handleDisconnect();
@@ -80,15 +103,17 @@ function useROS() {
     console.log('Listener ' + newListener.name + ' created');
     return newListener;
   }
-  
+
   const handleConnect = () => {
     try {
-      ros.ROS = new ROSLIB.Ros({
+        ros.ROS = new ROSLIB.Ros({
         url : ros.url,
       });
-
+      // Attempt Connection
       if (ros.ROS) ros.ROS.on('connection', () => {
-        setROS(ros => ({ ...ros, isConnected: true }));
+        setROS(ros => ({ ...ros, isConnected: true}));  // seems to take awhile for the roslibjs library to report connected
+        
+        setROS(ros => ({ ...ros, ROSConfirmedConnected: false  }));
         getTopics();
       })
 
@@ -106,10 +131,11 @@ function useROS() {
       setROS(ros => ({ ...ros, isConnected: false }));
       setROS(ros => ({ ...ros, topics: [] }));
       setROS(ros => ({ ...ros, listeners: [] }));
+      setROS(ros => ({ ...ros, ROSConfirmedConnected: false }));
     } catch (e) {
       console.log(e);
     }
-    console.log('Disconnect Requested');
+    console.log('Disconnected');
   }
   
 const removeAllListeners = () =>{
@@ -139,6 +165,7 @@ function removeListener (listener){
     toggleAutoconnect,
     removeAllListeners,
     removeListener,
+    checkConnection,
     ros: ros.ROS,
     isConnected: ros.isConnected,
     autoconnect: ros.autoconnect,

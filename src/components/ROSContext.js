@@ -5,6 +5,7 @@ const rosObj = {
   ROS: null,
   url: "ws://localhost:9090",
   isConnected: false,
+  ROSConfirmedConnected: false,
   autoconnect: false,
   topics: [],
   listeners: [],
