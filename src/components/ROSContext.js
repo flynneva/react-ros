@@ -1,8 +1,9 @@
 import React, { createContext, useState } from 'react'
 import PropTypes from 'prop-types'
+import ROSLIB from 'roslib'
 
 const rosObj = {
-  ROS: null,
+  ROS: new ROSLIB.Ros(),
   url: "ws://localhost:9090",
   isConnected: false,
   autoconnect: false,
