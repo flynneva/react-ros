@@ -6,6 +6,7 @@ const rosObj = {
   ROS: new ROSLIB.Ros(),
   url: "ws://localhost:9090",
   isConnected: false,
+  ROSConfirmedConnected: false,
   autoconnect: false,
   topics: [],
   services:[],

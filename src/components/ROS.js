@@ -17,6 +17,29 @@ function useROS() {
     }
   })
 
+  function checkConnection() {
+    if (ros.ROS){
+      if (ros.isConnected) {
+        if (!ros.ROSConfirmedConnected && ros.ROS.isConnected) {
+          setROS(ros => ({ ...ros, ROSConfirmedConnected: ros.ROS.isConnected }))
+          console.log("Both react-ros and roslibjs have confirmed connection.")
+        }
+        // Once we have that "confirmation"  we need to continously check for good connection
+        else if (ros.ROSConfirmedConnected && !ros.ROS.isConnected) {
+          setROS(ros => ({ ...ros, isConnected: false }));
+          handleDisconnect();
+        }
+        else if (!ros.ROS.isConnected) {
+          console.log("React-ros has confirmed the connection, roslibjs has not yet.")
+        }
+      }
+    }
+    else{
+      console.log("Initial connection not established yet")
+    }
+  }
+
+
   function toggleConnection() {
     if (ros.isConnected) {
       handleDisconnect();
