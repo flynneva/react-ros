@@ -55,10 +55,35 @@ function useROS() {
         });
       }, (message) => {
         console.error("Failed to get topic", message)
+        ros.topics = []
       });
     });
     topicsPromise.then((topics) => setROS(ros => ({ ...ros, topics: topics.topics })));
     return ros.topics;
+  }
+
+  function getServices() {
+    const servicesPromise = new Promise((resolve, reject) => {
+      ros.ROS.getServices((services) => {
+        const serviceList = services.map((serviceName) => {
+          return {
+            path: serviceName,
+            type: "service",
+          }
+        });
+        resolve({
+          services: serviceList
+        });
+        reject({
+          services: []
+        });
+      }, (message) => {
+        console.error("Failed to get services", message)
+        ros.services = []
+      });
+    });
+    servicesPromise.then((services) => setROS(ros => ({ ...ros, services: services.services })));
+    return ros.services;
   }
 
   function createListener(topic, msg_type, to_queue, compression_type) {
@@ -89,6 +114,7 @@ function useROS() {
         setROS(ros => ({ ...ros, isConnected: true }));  // seems to take awhile for the roslibjs library to report connected
         setROS(ros => ({ ...ros, ROSConfirmedConnected: false }));
         getTopics();
+        getServices();
       })
 
       ros.ROS.on('error', (error) => {  //gets a little annoying on the console, but probably ok for now
@@ -135,6 +161,7 @@ function useROS() {
     toggleConnection,
     changeUrl,
     getTopics,
+    getServices,
     createListener,
     toggleAutoconnect,
     removeAllListeners,
@@ -145,6 +172,7 @@ function useROS() {
     autoconnect: ros.autoconnect,
     url: ros.url,
     topics: ros.topics,
+    services: ros.services,
     listeners: ros.listeners,
   }
 }
