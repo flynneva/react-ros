@@ -25,7 +25,8 @@ jobs:
         run: |
           npm version minor --force -m "Version %s"
           git remote add gh-origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          git push gh-origin HEAD:main --tags
+          git push gh-origin HEAD:main --tags == 1 || tag_exists=1
+          if [ ${tag_exists:-0} -eq 1 ]; then echo "Tag already exists, continuing on"; fi
           version=$(npm run env | grep npm_package_version | cut -d '=' -f 2)
           echo "version=$version" >> $GITHUB_ENV
         env:
